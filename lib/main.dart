@@ -1,43 +1,40 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:noul_research/views/home.dart';
-import 'package:noul_research/views/welcome.dart';
-import 'package:noul_research/views/register/signin.dart';
-import 'package:noul_research/views/register/signup.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:nuol_research/views/home.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:nuol_research/views/register/welcome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(MyApp());
+final FlutterSecureStorage storage = FlutterSecureStorage();
+SharedPreferences preferences;
+var jwt;
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FlutterDownloader.initialize(debug: true);
+  preferences = await SharedPreferences.getInstance();
+  runApp(MyApp());
 }
 
-class _MyAppState extends State<MyApp> {
-  int index = 0;
-  final List<Widget> selectPage = [
-    // Welcome(),
-    SignIn(),
-    SignUp(),
-  ];
-  // String email;
-  @override
-  void initState() {
-    super.initState();
-    Home();
+// ignore: must_be_immutable
+class MyApp extends StatelessWidget {
+  Future<String> get checkLogin async {
+    jwt = await storage.read(key: "jwt");
+    if (jwt == null) return "";
+    return jwt;
   }
 
-  // Future<Null> homePage() async {
-  //   try {
-  //     SharedPreferences preferences = await SharedPreferences.getInstance();
-  //     String email = preferences.getString('email');
-  //     if (email != '' && email.isNotEmpty) {
-  //       MaterialPageRoute route = MaterialPageRoute(
-  //         builder: (value) => Home(),
-  //       );
-  //       Navigator.push(context, route);
-  //     }
-  //   } catch (e) {}
+  // checkLogin() async {
+  //   preferences = await SharedPreferences.getInstance();
+  //   if (preferences.getString('token') == null) {
+  //     MaterialPageRoute route = MaterialPageRoute(
+  //       builder: (value) => MyApp(),
+  //     );
+  //     Navigator.push(context, route);
+  //   }
   // }
 
   @override
@@ -45,30 +42,34 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'nuolResearch',
-      home: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.all(5),
-          // child: widgetPage.elementAt(_index),
-          child: selectPage[index],
-        ),
-        bottomNavigationBar: ConvexAppBar(
-          items: [
-            // TabItem(icon: Icons.pan_tool_rounded, title: 'ແນະນຳ'),
-            TabItem(icon: Icons.exit_to_app_rounded, title: 'ເຂົ້າສູ່ລະບົບ'),
-            TabItem(icon: Icons.person_add, title: 'ລົງທະບຽນ'),
-          ],
-          initialActiveIndex: index,
-          onTap: (int value) {
-            setState(() {
-              index = value;
-            });
-          },
-          color: Colors.blue[800],
-          backgroundColor: Colors.cyan[200],
-          activeColor: Colors.blue[800],
-          height: 50,
-        ),
-      ),
+      home: FutureBuilder(
+          future: checkLogin,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return CircularProgressIndicator();
+            }
+            if (snapshot.data != "") {
+              var data = snapshot.data;
+              // var jwt = data.split(".");
+              // if (jwt.length != 3) {
+              //   return Welcome();
+              // } else {
+              //   var payload = json.decode(
+              //     ascii.decode(base64.decode(base64.normalize(jwt[1]))),
+              //   );
+              //   print('main payload:::' + payload.toString());
+              //   if (DateTime.fromMillisecondsSinceEpoch(payload["exp"] * 1000)
+              //       .isAfter(DateTime.now())) {
+              //     return Home(payload['data']['email'].toString());
+              //   } else {
+              //     return Welcome();
+              //   }
+              // }
+              return Home(data.toString());
+            } else {
+              return Welcome();
+            }
+          }),
     );
   }
 }

@@ -58,8 +58,8 @@ class MyBookCard extends StatefulWidget {
     this.onDownloadPress,
     this.onBookmarkPress,
   });
-  final int bookId, totalView, totalLike, totalDownload;
-  final String bookName, bookGroup, yearPrint;
+  final totalView, totalLike, totalDownload;
+  final String bookId, bookName, bookGroup, yearPrint;
   final List<String> author;
   final IconData likeIcon, bookmarkIcon;
   final Function onBookTap, onLikePress, onDownloadPress, onBookmarkPress;
@@ -124,6 +124,7 @@ class _MyBookCardState extends State<MyBookCard> {
                       SizedBox(width: 5),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           for (var i in widget.author)
                             Text(

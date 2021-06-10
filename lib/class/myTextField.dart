@@ -1,21 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+//----- ບໍ່ໃຫ້ປ້ອນຊ່ອງວ່າງ -----\\
+//https://stackoverflow.com/questions/50123742/how-to-use-inputformatter-on-flutter-textfield
 
 class MyUsernameText extends StatelessWidget {
   MyUsernameText({
     this.title,
+    this.titleColor,
     this.controller,
+    this.textColor,
     this.iconColor,
+    this.onChanged,
   });
   final String title;
   final TextEditingController controller;
-  final Color iconColor;
+  final Color titleColor, textColor, iconColor;
+  final Function onChanged;
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10),
       child: TextField(
         controller: controller,
-        style: TextStyle(fontFamily: 'NotoSans', fontSize: 20),
+        style: TextStyle(
+          fontFamily: 'NotoSans',
+          fontSize: 20,
+          color: textColor,
+        ),
         keyboardType: TextInputType.name,
         decoration: InputDecoration(
           prefixIcon: Icon(
@@ -26,27 +37,30 @@ class MyUsernameText extends StatelessWidget {
           filled: true,
           fillColor: Colors.white,
           labelText: title,
-          labelStyle: TextStyle(color: Colors.grey),
+          labelStyle: TextStyle(color: titleColor),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide(
-              color: Colors.blue,
+              color: Colors.grey,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide(color: Colors.red),
+            borderSide: BorderSide(color: Colors.blue),
           ),
         ),
+        onChanged: onChanged,
       ),
     );
   }
 }
 
-class MyPasswordText extends StatefulWidget {
+class MyPasswordText extends StatelessWidget {
   MyPasswordText({
     this.title,
+    this.titleColor,
     this.controller,
+    this.textColor,
     this.iconColor,
     this.obscureText,
     this.onChanged,
@@ -55,49 +69,52 @@ class MyPasswordText extends StatefulWidget {
 
   final String title;
   final TextEditingController controller;
-  final Color iconColor;
+  final Color titleColor, textColor, iconColor;
   final bool obscureText;
   final Function onChanged, onTapped;
-  @override
-  _MyPasswordTextState createState() => _MyPasswordTextState();
-}
 
-class _MyPasswordTextState extends State<MyPasswordText> {
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10),
       child: TextField(
-        controller: widget.controller,
-        style: TextStyle(fontFamily: 'NotoSans', fontSize: 20),
-        obscureText: widget.obscureText,
+        controller: controller,
+        // inputFormatters: [BlacklistingTextInputFormatter(RegExp(r'\s'))],
+        inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r'\s'))],
+        style: TextStyle(
+          fontFamily: 'NotoSans',
+          fontSize: 20,
+          color: textColor,
+        ),
+        obscureText: obscureText,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 0),
           prefixIcon: Icon(
             Icons.vpn_key_rounded,
-            color: widget.iconColor,
+            color: iconColor,
           ),
           suffixIcon: GestureDetector(
-            onTap: widget.onTapped,
+            onTap: onTapped,
             child: Icon(
-              widget.obscureText ? Icons.visibility_off : Icons.visibility,
-              color: widget.obscureText ? Colors.blue : Colors.red,
+              obscureText ? Icons.visibility_off : Icons.visibility,
+              color: obscureText ? Colors.blue : Colors.red,
             ),
           ),
           filled: true,
           fillColor: Colors.white,
-          labelText: widget.title,
-          labelStyle: TextStyle(color: Colors.grey),
+          labelText: title,
+          labelStyle: TextStyle(color: titleColor),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
               borderSide: BorderSide(
-                color: Colors.blue,
+                color: Colors.grey,
               )),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide(color: Colors.red),
+            borderSide: BorderSide(color: Colors.blue),
           ),
         ),
+        onChanged: onChanged,
       ),
     );
   }
@@ -106,19 +123,31 @@ class _MyPasswordTextState extends State<MyPasswordText> {
 class MyEmailText extends StatelessWidget {
   MyEmailText({
     this.title,
+    this.titleColor,
     this.controller,
+    this.textColor,
     this.iconColor,
+    this.onChanged,
   });
+
   final String title;
   final TextEditingController controller;
-  final Color iconColor;
+  final Color titleColor, textColor, iconColor;
+  final Function onChanged;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10),
       child: TextField(
         controller: controller,
-        style: TextStyle(fontFamily: 'NotoSans', fontSize: 20),
+        // inputFormatters: [BlacklistingTextInputFormatter(RegExp(r'\s'))],
+        inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r'\s'))],
+        style: TextStyle(
+          fontFamily: 'NotoSans',
+          fontSize: 20,
+          color: textColor,
+        ),
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           prefixIcon: Icon(
@@ -129,34 +158,50 @@ class MyEmailText extends StatelessWidget {
           filled: true,
           fillColor: Colors.white,
           labelText: title,
-          labelStyle: TextStyle(color: Colors.grey),
+          labelStyle: TextStyle(color: titleColor),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide(
-              color: Colors.blue,
+              color: Colors.grey,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide(color: Colors.red),
+            borderSide: BorderSide(color: Colors.blue),
           ),
         ),
+        onChanged: onChanged,
       ),
     );
   }
 }
 
+// ignore: must_be_immutable
 class MyTextField extends StatelessWidget {
-  MyTextField({this.controller, this.width});
+  MyTextField({
+    this.controller,
+    this.textColor,
+    this.width,
+    this.onChanged,
+  });
+
   TextEditingController controller;
+  Color textColor;
   double width;
+  final Function onChanged;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       width: width,
       child: TextField(
         controller: controller,
-        style: TextStyle(fontFamily: 'NotoSans', fontSize: 18),
+        // inputFormatters: [BlacklistingTextInputFormatter(RegExp(r'\s'))],
+        inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r'\s'))],
+        style: TextStyle(
+          fontFamily: 'NotoSans',
+          fontSize: 18,
+        ),
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
@@ -170,10 +215,11 @@ class MyTextField extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
-            borderSide: BorderSide(color: Colors.red),
+            borderSide: BorderSide(color: Colors.green),
           ),
         ),
         textAlign: TextAlign.center,
+        onChanged: onChanged,
       ),
     );
   }
@@ -189,7 +235,10 @@ class MyLabelText extends StatelessWidget {
       width: width,
       child: TextField(
         enabled: false,
-        style: TextStyle(fontFamily: 'NotoSans', fontSize: 16),
+        style: TextStyle(
+          fontFamily: 'NotoSans',
+          fontSize: 16,
+        ),
         textAlign: TextAlign.end,
         keyboardType: TextInputType.number,
         decoration: InputDecoration(

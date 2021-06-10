@@ -6,16 +6,17 @@ class MyAppBar {
     this.controller,
     this.fontSize,
     this.isSearch,
-    this.onSearchPress,
-    this.onCancelPress,
-    this.onBackPress,
-    this.onActionPress,
+    this.onSearchState,
+    this.onClear,
+    this.onCancel,
+    this.onSubmitted,
+    this.onSearchData,
   });
   final String title;
   final TextEditingController controller;
   final double fontSize;
   final bool isSearch;
-  final Function onSearchPress, onCancelPress, onBackPress, onActionPress;
+  final Function onSearchState, onClear, onCancel, onSubmitted, onSearchData;
   AppBar myAppBar() {
     return AppBar(
       title: Text(
@@ -40,31 +41,40 @@ class MyAppBar {
               autofocus: true,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
-                hintStyle: TextStyle(color: Colors.white),
-                hintText: 'ຄົ້ນຫາຂໍ້ມູນ...',
+                hintStyle: TextStyle(color: Colors.white70, fontSize: 14),
+                hintText: 'ຄົ້ນຫາຕາມຊື່ບົດ, ສາຍການຄົ້ນຄວ້າ ແລະ ປີພີມ',
                 border: InputBorder.none,
               ),
+              onSubmitted: onSubmitted,
             )
           : Text(
               title,
               style: TextStyle(fontFamily: 'NotoSans', fontSize: fontSize),
             ),
       centerTitle: true,
-      actions: [
-        isSearch
-            ? IconButton(
-                icon: Icon(Icons.cancel),
-                onPressed: onCancelPress,
-              )
-            : IconButton(
+      actions: isSearch
+          ? [
+              IconButton(
+                // icon: Icon(Icons.arrow_forward_rounded),
+                icon: Icon(Icons.close, color: Colors.orange[800]),
+                onPressed: onClear,
+              ),
+              IconButton(
+                // icon: Icon(Icons.arrow_forward_rounded),
                 icon: Icon(Icons.search),
-                onPressed: onSearchPress,
+                onPressed: onSearchData,
               )
-      ],
+            ]
+          : [
+              IconButton(
+                icon: Icon(Icons.search),
+                onPressed: onSearchState,
+              )
+            ],
       leading: isSearch
           ? IconButton(
               icon: Icon(Icons.arrow_back),
-              onPressed: onBackPress,
+              onPressed: onCancel,
             )
           : null,
     );

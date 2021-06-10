@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:noul_research/class/myTextField.dart';
-import 'package:noul_research/class/myLogo.dart';
-import 'package:noul_research/class/myButton.dart';
-import 'package:noul_research/views/register/confirmSignin.dart';
+import 'package:nuol_research/class/myConnectivity.dart';
+import 'package:nuol_research/class/myToast.dart';
+import 'package:nuol_research/jsonDart/register.dart';
+import 'package:nuol_research/class/myTextField.dart';
+import 'package:nuol_research/class/myLogo.dart';
+import 'package:nuol_research/class/myButton.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:nuol_research/views/register/confirmSignup.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -10,11 +15,65 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final txtEmail = TextEditingController();
-  final txtUsername = TextEditingController();
-  final txtPassword = TextEditingController();
-  final txtConfirmPassword = TextEditingController();
-  bool blPassword = true;
+  Register register;
+  FocusNode focusNode;
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  String usernameTitle = 'ຊື່ຜູ້ໃຊ້';
+  String emailTitle = 'ອີເມລ';
+  String passwordTitle = 'ລະຫັດຜ່ານ';
+  Color usernameTitleColor = Colors.grey;
+  Color emailTitleColor = Colors.grey;
+  Color passwordTitleColor = Colors.grey;
+  Color usernameTextColor = Colors.black;
+  Color emailTextColor = Colors.black;
+  Color passwordTextColor = Colors.black;
+  bool hidePassword = true;
+
+  Future<void> signUp(String username, email, password) async {
+    try {
+      await CheckInternet.checkInternet();
+      if (CheckInternet.connectivityState == true) {
+        final url = 'http://192.168.43.191:9000/member/register';
+        Map body = {
+          'username': username,
+          'email': email,
+          'password': password,
+        };
+        var res = await http.post(
+          Uri.parse(url),
+          body: body,
+        );
+        var data = await json.decode(res.body);
+        if (data != null) {
+          if (data.toString() == '{message: this email already registered}') {
+            setState(() {
+              emailController.text = 'ອີເມລນີ້ຖືກລົງທະບຽນແລ້ວ';
+              emailTextColor = Colors.red;
+            });
+          } else {
+            register = registerFromJson(res.body);
+            Navigator.of(context).pop();
+            MaterialPageRoute route = MaterialPageRoute(
+              builder: (value) => ConfirmSignup(
+                register.registId,
+                register.username,
+                register.email,
+                register.password,
+              ),
+            );
+            Navigator.push(context, route);
+          }
+        } else {
+          myToast('ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ');
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,26 +91,60 @@ class _SignUpState extends State<SignUp> {
             ),
             SizedBox(height: 30),
             MyUsernameText(
-              title: 'ຊື່ຜູ້ໃຊ້',
-              controller: txtUsername,
+              title: usernameTitle,
+              titleColor: usernameTitleColor,
+              controller: usernameController,
+              textColor: usernameTextColor,
               iconColor: Colors.grey[500],
+              onChanged: (value) {
+                if (usernameTextColor == Colors.red ||
+                    usernameTitleColor == Colors.red) {
+                  usernameController.clear();
+                  usernameTextColor = Colors.black;
+                  usernameTitle = 'ຊື່ຜູ້ໃຊ້';
+                  usernameTitleColor = Colors.grey;
+                }
+              },
             ),
             SizedBox(height: 8),
             MyEmailText(
-              title: 'ອີເມລ',
-              controller: txtEmail,
+              title: emailTitle,
+              titleColor: emailTitleColor,
+              controller: emailController,
+              textColor: emailTextColor,
               iconColor: Colors.grey[500],
+              onChanged: (value) {
+                if (emailTextColor == Colors.red ||
+                    emailTitleColor == Colors.red) {
+                  setState(() {
+                    emailController.clear();
+                    emailTextColor = Colors.black;
+                    emailTitle = 'ອີເມລ';
+                    emailTitleColor = Colors.grey;
+                  });
+                }
+              },
             ),
             SizedBox(height: 8),
             MyPasswordText(
-              title: 'ລະຫັດຜ່ານ',
-              controller: txtPassword,
-              obscureText: blPassword,
+              title: passwordTitle,
+              titleColor: passwordTitleColor,
+              controller: passwordController,
+              textColor: passwordTextColor,
+              obscureText: hidePassword,
               iconColor: Colors.grey[500],
-              onChanged: () {},
+              onChanged: (value) {
+                if (passwordTextColor == Colors.red ||
+                    passwordTitleColor == Colors.red) {
+                  passwordController.clear();
+                  passwordTextColor = Colors.black;
+                  passwordTitle = 'ລະຫັດຜ່ານ';
+                  passwordTitleColor = Colors.grey;
+                }
+              },
               onTapped: () {
                 setState(() {
-                  blPassword = !blPassword;
+                  hidePassword = !hidePassword;
                 });
               },
             ),
@@ -65,10 +158,38 @@ class _SignUpState extends State<SignUp> {
               height: 65,
               width: (MediaQuery.of(context).size.width) - 12,
               onPressed: () {
-                MaterialPageRoute route = MaterialPageRoute(
-                  builder: (value) => ConfirmSignin(),
-                );
-                Navigator.push(context, route);
+                FocusScope.of(context).unfocus();
+                if (usernameController.text == null ||
+                    usernameController.text.isEmpty) {
+                  setState(() {
+                    usernameTitle = 'ກະລຸນາປ້ອນຊື່ຜູ້ໃຊ້ກ່ອນ';
+                    usernameTitleColor = Colors.red;
+                  });
+                } else if (emailController.text == null ||
+                    emailController.text.isEmpty) {
+                  setState(() {
+                    emailTitle = 'ກະລຸນາປ້ອນອີເມລກ່ອນ';
+                    emailTitleColor = Colors.red;
+                  });
+                } else if (passwordController.text == null ||
+                    passwordController.text.isEmpty) {
+                  setState(() {
+                    usernameTitle = 'ກະລຸນາປ້ອນລະຫັດກ່ອນ';
+                    passwordTitleColor = Colors.red;
+                  });
+                } else if (passwordController.text.length < 5) {
+                  setState(() {
+                    hidePassword = false;
+                    passwordController.text = 'ລະຫັດຜ່ານຕ້ອງຫຼາຍກວ່າ5ຕົວ';
+                    passwordTextColor = Colors.red;
+                  });
+                } else {
+                  signUp(
+                    usernameController.text,
+                    emailController.text,
+                    passwordController.text,
+                  );
+                }
               },
             ),
           ],
