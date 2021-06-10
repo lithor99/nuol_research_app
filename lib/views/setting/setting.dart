@@ -3,6 +3,7 @@ import 'package:nuol_research/class/myTextField.dart';
 import 'package:nuol_research/class/myButton.dart';
 import 'package:nuol_research/class/myAppBar.dart';
 import 'package:nuol_research/class/myToast.dart';
+import 'package:nuol_research/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Setting extends StatefulWidget {
@@ -16,7 +17,6 @@ class _SettingState extends State<Setting> {
   TextEditingController txtDownload;
   Future<void> showTop() async {
     try {
-      SharedPreferences preferences = await SharedPreferences.getInstance();
       setState(() {
         txtView = TextEditingController(
             text: preferences.getString('topView') ?? '10');

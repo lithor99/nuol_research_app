@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:localstorage/localstorage.dart';
 import 'package:nuol_research/views/home.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:nuol_research/views/register/welcome.dart';
