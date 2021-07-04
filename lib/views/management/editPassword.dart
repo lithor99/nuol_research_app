@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nuol_research/class/myConnectivity.dart';
 import 'package:nuol_research/class/myTextField.dart';
 import 'package:nuol_research/class/myButton.dart';
@@ -10,6 +11,8 @@ import 'package:nuol_research/class/myToast.dart';
 import 'dart:convert';
 
 import 'package:nuol_research/views/home.dart';
+
+import '../../main.dart';
 
 class EditPassword extends StatefulWidget {
   @override
@@ -36,7 +39,7 @@ class _EditPasswordState extends State<EditPassword> {
       setState(() {
         isChanging = true;
       });
-      final url = 'http://192.168.43.191:9000/member/edit/password';
+      final url = serverName + '/member/edit/password';
       Map body = {
         'new_password': _newPassword,
         'email': _email,
@@ -59,12 +62,17 @@ class _EditPasswordState extends State<EditPassword> {
               newPasswordController.clear();
               oldPasswordController.clear();
             });
-            myToast('ປ່ຽນລະຫັດຜ່ານສຳເລັດແລ້ວ');
+            myToast(
+              'ປ່ຽນລະຫັດຜ່ານສຳເລັດແລ້ວ',
+              Colors.black,
+              Toast.LENGTH_SHORT,
+            );
           } else {
             myDisplayDialog(
               context,
               'ການແຈ້ງເຕືອນ',
               'ການປ່ຽນລະຫັດຜ່ານມີຂໍ້ຜິດພາດ',
+              Colors.blue,
             );
           }
         }
@@ -83,7 +91,7 @@ class _EditPasswordState extends State<EditPassword> {
         padding: EdgeInsets.all(0),
         child: isChanging
             ? Center(
-                child: SpinKitFadingCircle(color: Colors.blue, size: 100),
+                child: SpinKitFadingCircle(color: Colors.blue, size: 80),
               )
             : ListView(
                 children: [
@@ -239,6 +247,8 @@ class _EditPasswordState extends State<EditPassword> {
                               } else {
                                 myToast(
                                   'ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
+                                  Colors.black,
+                                  Toast.LENGTH_SHORT,
                                 );
                               }
                             }

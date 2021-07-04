@@ -181,7 +181,6 @@ class _MyBookCardState extends State<MyBookCard> {
                     children: [
                       IconButton(
                           icon: Icon(
-                            // Icons.thumb_up_outlined,
                             widget.likeIcon,
                             color: Colors.lightBlue,
                             size: 30,

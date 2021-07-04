@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 
 class MyAlertDialog {
-  MyAlertDialog({this.title, this.content, this.onCancel, this.onOkay});
+  MyAlertDialog({
+    this.title,
+    this.content,
+    this.onCancel,
+    this.onOkay,
+    this.cancelColor,
+    this.okColor,
+  });
   final String title, content;
   final Function onCancel, onOkay;
+  final Color cancelColor, okColor;
   void showDialogBox(BuildContext context) {
     showDialog(
       context: context,
@@ -27,36 +35,26 @@ class MyAlertDialog {
             textAlign: TextAlign.center,
           ),
           actions: [
-            FlatButton.icon(
-              icon: Icon(
-                Icons.cancel_outlined,
-                color: Colors.red,
-              ),
-              label: Text(
+            TextButton(
+              child: Text(
                 'ຍົກເລີກ',
                 style: TextStyle(
                   fontFamily: 'NotoSans',
                   fontSize: 18,
-                  color: Colors.blue[800],
+                  color: cancelColor,
                 ),
               ),
-              // color: Colors.blue[100],
               onPressed: onCancel,
             ),
-            FlatButton.icon(
-              icon: Icon(
-                Icons.check_circle_outline_rounded,
-                color: Colors.green,
-              ),
-              label: Text(
+            TextButton(
+              child: Text(
                 'ຕົກລົງ',
                 style: TextStyle(
                   fontFamily: 'NotoSans',
                   fontSize: 18,
-                  color: Colors.blue[800],
+                  color: okColor,
                 ),
               ),
-              // color: Colors.blue[100],
               onPressed: onOkay,
             ),
           ],
@@ -66,7 +64,7 @@ class MyAlertDialog {
   }
 }
 
-void myDisplayDialog(context, title, content) => showDialog(
+void myDisplayDialog(context, title, titleColor, content) => showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
@@ -86,20 +84,15 @@ void myDisplayDialog(context, title, content) => showDialog(
           textAlign: TextAlign.center,
         ),
         actions: [
-          FlatButton.icon(
-            icon: Icon(
-              Icons.check_circle_outline_rounded,
-              color: Colors.green,
-            ),
-            label: Text(
+          TextButton(
+            child: Text(
               'ຕົກລົງ',
               style: TextStyle(
                 fontFamily: 'NotoSans',
                 fontSize: 18,
-                color: Colors.blue[800],
+                color: titleColor,
               ),
             ),
-            // color: Colors.orange[100],
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -108,42 +101,42 @@ void myDisplayDialog(context, title, content) => showDialog(
       ),
     );
 
-class ChooseFileDialog extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.camera_alt_outlined,
-                    size: 80,
-                    color: Colors.blue,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.image_outlined,
-                    size: 80,
-                    color: Colors.blue,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            ),
-          );
-        });
-  }
-}
+// class ChooseFileDialog extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     showDialog(
+//         context: context,
+//         builder: (BuildContext context) {
+//           return AlertDialog(
+//             content: Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 IconButton(
+//                   icon: Icon(
+//                     Icons.camera_alt_outlined,
+//                     size: 80,
+//                     color: Colors.blue,
+//                   ),
+//                   onPressed: () {
+//                     Navigator.of(context).pop();
+//                   },
+//                 ),
+//                 IconButton(
+//                   icon: Icon(
+//                     Icons.image_outlined,
+//                     size: 80,
+//                     color: Colors.blue,
+//                   ),
+//                   onPressed: () {
+//                     Navigator.of(context).pop();
+//                   },
+//                 ),
+//               ],
+//             ),
+//           );
+//         });
+//   }
+// }
 
 class ChooseImageDialog {
   Function onCameraPressed;
@@ -161,7 +154,6 @@ class ChooseImageDialog {
             '',
             textAlign: TextAlign.center,
           ),
-          // backgroundColor: Colors.cyan,
           content: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -185,7 +177,7 @@ class ChooseImageDialog {
             ],
           ),
           actions: [
-            FlatButton(
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },

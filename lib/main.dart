@@ -8,7 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final FlutterSecureStorage storage = FlutterSecureStorage();
 SharedPreferences preferences;
-var jwt;
+var email;
+final String serverName = 'http://192.168.43.191:9000';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,34 +22,23 @@ void main() async {
 // ignore: must_be_immutable
 class MyApp extends StatelessWidget {
   Future<String> get checkLogin async {
-    jwt = await storage.read(key: "jwt");
-    if (jwt == null) return "";
-    return jwt;
+    email = await storage.read(key: "email");
+    print('main email:' + email.toString());
+    if (email == null) return null;
+    return email;
   }
-
-  // checkLogin() async {
-  //   preferences = await SharedPreferences.getInstance();
-  //   if (preferences.getString('token') == null) {
-  //     MaterialPageRoute route = MaterialPageRoute(
-  //       builder: (value) => MyApp(),
-  //     );
-  //     Navigator.push(context, route);
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'nuolResearch',
+      title: 'NUOLResearch',
       home: FutureBuilder(
           future: checkLogin,
           builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return CircularProgressIndicator();
-            }
-            if (snapshot.data != "") {
-              var data = snapshot.data;
+            if (snapshot.data == null) {
+              // var data = snapshot.data;
+              // print('main data:' + data.toString());
               // var jwt = data.split(".");
               // if (jwt.length != 3) {
               //   return Welcome();
@@ -64,9 +54,15 @@ class MyApp extends StatelessWidget {
               //     return Welcome();
               //   }
               // }
-              return Home(data.toString());
-            } else {
+              // if (data) {
+              //   return Home(data.toString());
+              // } else {
+              //   return Welcome();
+              // }
               return Welcome();
+            } else {
+              print('main data:' + snapshot.data.toString());
+              return Home(snapshot.data.toString());
             }
           }),
     );

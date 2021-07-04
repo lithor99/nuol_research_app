@@ -42,7 +42,7 @@ class MyAppBar {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 hintStyle: TextStyle(color: Colors.white70, fontSize: 14),
-                hintText: 'ຄົ້ນຫາຕາມຊື່ບົດ, ສາຍການຄົ້ນຄວ້າ ແລະ ປີພີມ',
+                hintText: 'ຊື່ບົດຄົ້ນຄວ້າ, ຊື່ຜູ້ແຕ່ງ ຫຼື ນາມສະກຸນ',
                 border: InputBorder.none,
               ),
               onSubmitted: onSubmitted,

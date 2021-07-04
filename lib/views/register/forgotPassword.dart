@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nuol_research/class/myConnectivity.dart';
 import 'package:nuol_research/class/myTextField.dart';
 import 'package:nuol_research/class/myButton.dart';
@@ -7,6 +8,8 @@ import 'package:nuol_research/class/myToast.dart';
 import 'package:nuol_research/views/register/confirmPassword.dart';
 import 'package:http/http.dart' as http;
 import 'package:nuol_research/class/myAlertDialog.dart';
+
+import '../../main.dart';
 
 class ForgotPassword extends StatefulWidget {
   @override
@@ -23,7 +26,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   Future<void> sendConfirmNumber(String _email) async {
     try {
-      final url = 'http://192.168.43.191:9000/member/forgot_password';
+      final url = serverName + '/member/forgot_password';
       Map body = {'email': _email};
       await http.put(
         Uri.parse(url),
@@ -38,14 +41,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: MyAppBar(title: 'ລືມລະຫັດຜ່ານ', fontSize: 20).myAppBar(),
+      appBar: MyAppBar(title: 'ກູ້ຄືນລະຫັດຜ່ານ', fontSize: 20).myAppBar(),
       body: Center(
         child: ListView(
           children: [
             Padding(
               padding: const EdgeInsets.all(5),
               child: Container(
-                height: 100,
+                height: 150,
                 color: Colors.cyan[100],
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -110,6 +113,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       context,
                       'ການແຈ້ງເຕືອນ',
                       'ກະລຸນາກວດເບີ່ງວ່າອີເມລຂອງທ່ານຖືກຕ້ອງແລ້ວບໍ?',
+                      Colors.blue,
                     );
                   } else {
                     await CheckInternet.checkInternet();
@@ -119,8 +123,17 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         sendMailButton = 'ສົ່ງລະຫັດອີກຄັ້ງ';
                       });
                       sendConfirmNumber(emailController.text);
+                      myToast(
+                        'ກະລຸນາລໍຖ້າລະບົບກຳລັງສົ່ງລະຫັດໄປຫາອີເມລ',
+                        Colors.black,
+                        Toast.LENGTH_LONG,
+                      );
                     } else {
-                      myToast('ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ');
+                      myToast(
+                        'ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
+                        Colors.black,
+                        Toast.LENGTH_SHORT,
+                      );
                     }
                   }
                 }

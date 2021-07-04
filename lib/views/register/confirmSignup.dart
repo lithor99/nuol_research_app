@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nuol_research/class/myAlertDialog.dart';
 import 'package:nuol_research/class/myConnectivity.dart';
 import 'package:nuol_research/class/myTextField.dart';
@@ -37,7 +38,7 @@ class _ConfirmSignupState extends State<ConfirmSignup> {
     _confNum,
   ) async {
     try {
-      final url = 'http://192.168.43.191:9000/member/confirm_register';
+      final url = serverName + '/member/confirm_register';
       Map body = {
         'regist_id': _registId,
         'username': _username,
@@ -58,7 +59,6 @@ class _ConfirmSignupState extends State<ConfirmSignup> {
           });
         } else {
           await storage.write(key: "jwt", value: data['email']);
-          Navigator.of(context).pop();
           MaterialPageRoute route = MaterialPageRoute(
             builder: (value) => UploadProfile(data['email']),
           );
@@ -71,7 +71,7 @@ class _ConfirmSignupState extends State<ConfirmSignup> {
   }
 
   Future<void> sendMailAgain(String _registId, _email) async {
-    final url = 'http://192.168.43.191:9000/member/send_mail_again';
+    final url = serverName + '/member/send_mail_again';
 
     Map body = {'regist_id': _registId, 'email': _email};
     await http.put(
@@ -89,7 +89,7 @@ class _ConfirmSignupState extends State<ConfirmSignup> {
             Padding(
               padding: const EdgeInsets.all(5),
               child: Container(
-                height: 100,
+                height: 150,
                 color: Colors.cyan[100],
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -170,6 +170,7 @@ class _ConfirmSignupState extends State<ConfirmSignup> {
                     context,
                     'ການແຈ້ງເຕືອນ',
                     'ກະລຸນາກວດເບີ່ງວ່າອີເມລຂອງທ່ານຖືກຕ້ອງແລ້ວບໍ?',
+                    Colors.blue,
                   );
                 } else {
                   await CheckInternet.checkInternet();
@@ -179,7 +180,11 @@ class _ConfirmSignupState extends State<ConfirmSignup> {
                     });
                     sendMailAgain(widget.registId, widget.email);
                   } else {
-                    myToast('ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ');
+                    myToast(
+                      'ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
+                      Colors.black,
+                      Toast.LENGTH_SHORT,
+                    );
                   }
                 }
               },

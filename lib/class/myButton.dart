@@ -17,16 +17,21 @@ class MyButton extends StatelessWidget {
   final Color titleColor, buttonColor;
   final double height, width;
   final Function onPressed;
+
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
+      onPrimary: buttonColor,
+      primary: buttonColor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+    );
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10),
       width: width,
       height: height,
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-        color: buttonColor,
+      child: ElevatedButton(
         onPressed: onPressed,
+        style: raisedButtonStyle,
         child: Text(
           title,
           style: TextStyle(
@@ -37,6 +42,20 @@ class MyButton extends StatelessWidget {
           ),
         ),
       ),
+      // child: RaisedButton(
+      //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      //   color: buttonColor,
+      //   onPressed: onPressed,
+      // child: Text(
+      //   title,
+      //   style: TextStyle(
+      //     fontFamily: 'NotoSans',
+      //     fontSize: fontSize,
+      //     fontWeight: fontWeight,
+      //     color: titleColor,
+      //   ),
+      // ),
+      // ),
     );
   }
 }

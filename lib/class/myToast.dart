@@ -1,11 +1,15 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-Future<void> myToast(String message) async {
+Future<void> myToast(String message, Color toastColor, final showLength) async {
   Fluttertoast.showToast(
     msg: message,
     fontSize: 16,
-    toastLength: Toast.LENGTH_SHORT,
+    textColor: Colors.white,
+    toastLength: showLength,
     gravity: ToastGravity.BOTTOM,
     timeInSecForIosWeb: 1,
+    backgroundColor: toastColor,
   );
 }

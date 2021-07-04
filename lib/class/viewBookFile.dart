@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:http/http.dart' as http;
 
+import '../main.dart';
+
 // ignore: must_be_immutable
 class ViewBookFile extends StatefulWidget {
   final String bookId;
@@ -17,7 +19,7 @@ class _ViewBookFileState extends State<ViewBookFile> {
 
   Future<void> addView(String bookId) async {
     try {
-      final url = 'http://192.168.43.191:9000/book/add_view';
+      final url = serverName + '/book/add_view';
       Map body = {'book_id': bookId};
       await http.put(Uri.parse(url), body: body);
     } catch (e) {

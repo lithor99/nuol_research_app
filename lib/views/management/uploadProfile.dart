@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nuol_research/class/myAlertDialog.dart';
 import 'package:nuol_research/class/myButton.dart';
@@ -9,6 +10,10 @@ import 'package:nuol_research/class/myConnectivity.dart';
 import 'package:nuol_research/class/myToast.dart';
 import 'package:nuol_research/views/home.dart';
 import 'package:http/http.dart' as http;
+import 'package:nuol_research/views/register/confirmSignup.dart';
+import 'package:nuol_research/views/register/signup.dart';
+
+import '../../main.dart';
 
 class UploadProfile extends StatefulWidget {
   final String email;
@@ -50,7 +55,7 @@ class _UploadProfileState extends State<UploadProfile> {
 
   Future<void> saveImageUrl(String profile) async {
     try {
-      final url = 'http://192.168.43.191:9000/member/upload_profile';
+      final url = serverName + '/member/upload_profile';
       Map body = {'email': widget.email, 'profile': profile};
       await http.put(Uri.parse(url), body: body);
     } catch (e) {
@@ -75,43 +80,55 @@ class _UploadProfileState extends State<UploadProfile> {
         setState(() {
           isUploading = false;
         });
-        await myToast('ການລົງທະບຽນສຳເລັດແລ້ວ');
+        await myToast(
+          'ການລົງທະບຽນສຳເລັດແລ້ວ',
+          Colors.black,
+          Toast.LENGTH_SHORT,
+        );
+        Navigator.of(context).pop(
+          MaterialPageRoute(builder: (value) => ConfirmSignup('', '', '', '')),
+        );
+        Navigator.of(context).pop(
+          MaterialPageRoute(builder: (value) => SignUp()),
+        );
         Navigator.of(context).pop();
         MaterialPageRoute route = MaterialPageRoute(
           builder: (value) => Home(widget.email),
         );
         Navigator.push(context, route);
       } else {
-        myToast('ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ');
+        myToast(
+          'ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
+          Colors.black,
+          Toast.LENGTH_SHORT,
+        );
       }
     } catch (e) {
       print(e.toString());
     }
   }
 
-  // @override
-  // void initState() async {
-  //   super.initState();
-  //   await Firebase.initializeApp();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(5),
+        padding: EdgeInsets.only(left: 5, top: 10, right: 5, bottom: 10),
         child: Center(
           child: isUploading
-              ? SpinKitFadingCircle(color: Colors.blue, size: 100)
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+              ? SpinKitFadingCircle(color: Colors.blue, size: 80)
+              : ListView(
                   children: [
                     CircleAvatar(
-                      radius: 180,
-                      backgroundImage: imageFile == null
-                          ? AssetImage('images/account1.jpg')
-                          : FileImage(imageFile),
+                      radius: 2 * (MediaQuery.of(context).size.width) / 5,
+                      backgroundColor: Colors.blue[100],
+                      child: Text(
+                        'ຮູບພາບ',
+                        style: TextStyle(
+                          fontFamily: 'NotoSans',
+                          fontSize: 20,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                     SizedBox(height: 20),
                     Column(
@@ -153,27 +170,44 @@ class _UploadProfileState extends State<UploadProfile> {
                                 },
                         ),
                         SizedBox(height: 20),
-                        MyButton(
-                          title: 'ຂ້າມໄປກ່ອນ',
-                          titleColor: Colors.white,
-                          height: 60,
-                          width: (MediaQuery.of(context).size.width) / 2,
-                          buttonColor: Colors.orange[800],
-                          fontSize: 20,
-                          fontWeight: FontWeight.normal,
-                          onPressed: () async {
-                            await CheckInternet.checkInternet();
-                            if (CheckInternet.connectivityState == true) {
-                              MaterialPageRoute route = MaterialPageRoute(
-                                builder: (value) => Home(widget.email),
-                              );
-                              Navigator.push(context, route);
-                            } else {
-                              myToast(
-                                'ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
-                              );
-                            }
-                          },
+                        Center(
+                          child: InkWell(
+                            child: Text(
+                              'ຂ້າມໄປກ່ອນ',
+                              style: TextStyle(
+                                fontFamily: 'NotoSans',
+                                fontSize: 18,
+                                color: Colors.red,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                            onTap: () async {
+                              await CheckInternet.checkInternet();
+                              if (CheckInternet.connectivityState == true) {
+                                Navigator.of(context).pop(
+                                  MaterialPageRoute(
+                                    builder: (value) =>
+                                        ConfirmSignup('', '', '', ''),
+                                  ),
+                                );
+                                Navigator.of(context).pop(
+                                  MaterialPageRoute(
+                                      builder: (value) => SignUp()),
+                                );
+                                Navigator.of(context).pop();
+                                MaterialPageRoute route = MaterialPageRoute(
+                                  builder: (value) => Home(widget.email),
+                                );
+                                Navigator.push(context, route);
+                              } else {
+                                myToast(
+                                  'ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
+                                  Colors.black,
+                                  Toast.LENGTH_SHORT,
+                                );
+                              }
+                            },
+                          ),
                         ),
                       ],
                     ),

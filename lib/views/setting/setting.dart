@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nuol_research/class/myTextField.dart';
 import 'package:nuol_research/class/myButton.dart';
 import 'package:nuol_research/class/myAppBar.dart';
@@ -49,7 +50,7 @@ class _SettingState extends State<Setting> {
               Padding(
                 padding: const EdgeInsets.all(5),
                 child: Container(
-                  height: 100,
+                  height: 150,
                   color: Colors.cyan[100],
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -150,7 +151,11 @@ class _SettingState extends State<Setting> {
                   await preferences.setString('topView', txtView.text);
                   await preferences.setString('topLike', txtLike.text);
                   await preferences.setString('topDownload', txtDownload.text);
-                  myToast('ຕັ້ງຄ່າສຳເລັດແລ້ວ');
+                  myToast(
+                    'ຕັ້ງຄ່າສຳເລັດແລ້ວ',
+                    Colors.black,
+                    Toast.LENGTH_SHORT,
+                  );
                 },
               )
             ],

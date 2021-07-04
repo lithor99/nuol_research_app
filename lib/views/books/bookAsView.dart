@@ -8,6 +8,8 @@ import 'package:nuol_research/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:permission_handler/permission_handler.dart';
+
 class BookAsView extends StatefulWidget {
   final String memberId;
   BookAsView(this.memberId);
@@ -31,7 +33,7 @@ class _BookAsViewState extends State<BookAsView> {
 
   Future<void> getBookAsView() async {
     try {
-      final url = 'http://192.168.43.191:9000/book/view_as_view';
+      final url = serverName + '/book/view_as_view';
       Map body = {'top': preferences.getString('topView')};
       var res = await http.post(
         Uri.parse(url),
@@ -74,7 +76,7 @@ class _BookAsViewState extends State<BookAsView> {
 
   Future<void> getAuthor(String bookId, int index) async {
     try {
-      final url = 'http://192.168.43.191:9000/book/get_author';
+      final url = serverName + '/book/get_author';
       Map body = {'book_id': bookId};
       var res = await http.post(Uri.parse(url), body: body);
       var data = json.decode(res.body);
@@ -96,7 +98,7 @@ class _BookAsViewState extends State<BookAsView> {
 
   Future<void> like(String bookId) async {
     try {
-      final url = 'http://192.168.43.191:9000/book/like';
+      final url = serverName + '/book/like';
       Map body = {'member_id': widget.memberId, 'book_id': bookId};
       await http.post(Uri.parse(url), body: body);
     } catch (e) {
@@ -106,7 +108,7 @@ class _BookAsViewState extends State<BookAsView> {
 
   Future<void> dislike(String bookId) async {
     try {
-      final url = 'http://192.168.43.191:9000/book/dislike';
+      final url = serverName + '/book/dislike';
       Map body = {'member_id': widget.memberId, 'book_id': bookId};
       await http.post(Uri.parse(url), body: body);
     } catch (e) {
@@ -116,7 +118,7 @@ class _BookAsViewState extends State<BookAsView> {
 
   Future<void> getLike() async {
     try {
-      final url = 'http://192.168.43.191:9000/book/get_like';
+      final url = serverName + '/book/get_like';
       Map body = {'member_id': widget.memberId};
       var res = await http.post(Uri.parse(url), body: body);
       var data = json.decode(res.body);
@@ -147,7 +149,7 @@ class _BookAsViewState extends State<BookAsView> {
 
   Future<void> bookmark(String bookId) async {
     try {
-      final url = 'http://192.168.43.191:9000/book/bookmark';
+      final url = serverName + '/book/bookmark';
       Map body = {'member_id': widget.memberId, 'book_id': bookId};
       await http.post(Uri.parse(url), body: body);
     } catch (e) {
@@ -157,7 +159,7 @@ class _BookAsViewState extends State<BookAsView> {
 
   Future<void> unbookmark(String bookId) async {
     try {
-      final url = 'http://192.168.43.191:9000/book/unbookmark';
+      final url = serverName + '/book/unbookmark';
       Map body = {'member_id': widget.memberId, 'book_id': bookId};
       await http.post(Uri.parse(url), body: body);
     } catch (e) {
@@ -167,7 +169,7 @@ class _BookAsViewState extends State<BookAsView> {
 
   Future<void> getBookmark() async {
     try {
-      final url = 'http://192.168.43.191:9000/book/get_bookmark';
+      final url = serverName + '/book/get_bookmark';
       Map body = {'member_id': widget.memberId};
       var res = await http.post(Uri.parse(url), body: body);
       var data = json.decode(res.body);
@@ -199,7 +201,7 @@ class _BookAsViewState extends State<BookAsView> {
 
   Future<void> getBookFile(String bookId) async {
     try {
-      final url = 'http://192.168.43.191:9000/book/get_book_file';
+      final url = serverName + '/book/get_book_file';
       Map body = {'book_id': bookId};
       var res = await http.post(Uri.parse(url), body: body);
       var data = json.decode(res.body);
@@ -227,79 +229,99 @@ class _BookAsViewState extends State<BookAsView> {
           padding: EdgeInsets.all(5),
           child: FutureBuilder(
             future: getBookAsView(),
-            builder: (context, snapshot) => ListView(
-              children: [
-                for (int i = 0; i < bookIds.length; i++)
-                  MyBookCard(
-                    bookId: bookIds[i],
-                    bookName: bookNames[i],
-                    bookGroup: bookGroups[i],
-                    author: authors[i],
-                    yearPrint: yearPrints[i],
-                    totalView: totalViews[i],
-                    totalLike: totalLikes[i],
-                    totalDownload: totalDownloads[i],
-                    likeIcon: isLikes[i]
-                        ? Icons.thumb_up_alt_rounded
-                        : Icons.thumb_up_outlined,
-                    bookmarkIcon: isBookmarks[i]
-                        ? Icons.star_outlined
-                        : Icons.star_outline,
-                    onBookTap: () async {
-                      await getBookFile(bookIds[i]);
-                      MaterialPageRoute route = MaterialPageRoute(
-                        builder: (value) =>
-                            ViewBookFile(bookIds[i], bookNames[i], bookUrl),
-                      );
-                      Navigator.push(context, route);
-                    },
-                    onLikePress: () async {
-                      if (isLikes[i] == false) {
-                        await like(bookIds[i]);
-                        setState(() {
-                          isLikes[i] = !isLikes[i];
-                        });
-                      } else {
-                        await dislike(bookIds[i]);
-                        setState(() {
-                          isLikes[i] = !isLikes[i];
-                        });
-                      }
-                    },
-                    onDownloadPress: () async {
-                      MyAlertDialog(
-                        title: 'ການດາວໂຫຼດ!',
-                        content: 'ທ່ານຕ້ອງການດາວໂຫຼດແທ້ບໍ?',
-                        onCancel: () async {
-                          Navigator.of(context).pop();
-                        },
-                        onOkay: () async {
-                          Navigator.of(context).pop();
-                          await getBookFile(bookIds[i]);
-                          await DownloadBookFile.downloadBookFile(
-                            bookIds[i],
-                            bookUrl,
-                            bookNames[i],
-                          );
-                        },
-                      ).showDialogBox(context);
-                    },
-                    onBookmarkPress: () async {
-                      if (isBookmarks[i] == false) {
-                        await bookmark(bookIds[i]);
-                        setState(() {
-                          isBookmarks[i] = !isBookmarks[i];
-                        });
-                      } else {
-                        await unbookmark(bookIds[i]);
-                        setState(() {
-                          isBookmarks[i] = !isBookmarks[i];
-                        });
-                      }
-                    },
+            builder: (context, snapshot) => bookIds.length <= 0
+                ? Center(
+                    child: Text(
+                      'ບໍ່ມີຂໍ້ມູນ',
+                      style: TextStyle(fontFamily: 'NotoSans', fontSize: 20),
+                    ),
+                  )
+                : ListView(
+                    children: [
+                      for (int i = 0; i < bookIds.length; i++)
+                        MyBookCard(
+                          bookId: bookIds[i],
+                          bookName: bookNames[i],
+                          bookGroup: bookGroups[i],
+                          author: authors[i],
+                          yearPrint: yearPrints[i],
+                          totalView: totalViews[i],
+                          totalLike: totalLikes[i],
+                          totalDownload: totalDownloads[i],
+                          likeIcon: isLikes[i]
+                              ? Icons.thumb_up_alt_rounded
+                              : Icons.thumb_up_outlined,
+                          bookmarkIcon: isBookmarks[i]
+                              ? Icons.star_outlined
+                              : Icons.star_outline,
+                          onBookTap: () async {
+                            await getBookFile(bookIds[i]);
+                            MaterialPageRoute route = MaterialPageRoute(
+                              builder: (value) => ViewBookFile(
+                                  bookIds[i], bookNames[i], bookUrl),
+                            );
+                            await Navigator.push(context, route);
+                            setState(() {});
+                          },
+                          onLikePress: () async {
+                            if (isLikes[i] == false) {
+                              await like(bookIds[i]);
+                              setState(() {
+                                isLikes[i] = !isLikes[i];
+                              });
+                            } else {
+                              await dislike(bookIds[i]);
+                              setState(() {
+                                isLikes[i] = !isLikes[i];
+                              });
+                            }
+                          },
+                          onDownloadPress: () async {
+                            final status = await Permission.storage.request();
+                            if (status.isGranted) {
+                              MyAlertDialog(
+                                title: 'ການດາວໂຫຼດ!',
+                                content: 'ທ່ານຕ້ອງການດາວໂຫຼດແທ້ບໍ?',
+                                cancelColor: Colors.red,
+                                okColor: Colors.blue,
+                                onCancel: () async {
+                                  Navigator.of(context).pop();
+                                },
+                                onOkay: () async {
+                                  Navigator.of(context).pop();
+                                  await getBookFile(bookIds[i]);
+                                  // await DownloadBookFile.downloadBookFile(
+                                  //   bookIds[i],
+                                  //   bookUrl,
+                                  //   bookNames[i],
+                                  // );
+                                  await DownloadBookFile.downloadFile(
+                                    bookIds[i],
+                                    bookUrl,
+                                    bookNames[i],
+                                  );
+                                },
+                              ).showDialogBox(context);
+                            } else {
+                              print('no permission');
+                            }
+                          },
+                          onBookmarkPress: () async {
+                            if (isBookmarks[i] == false) {
+                              await bookmark(bookIds[i]);
+                              setState(() {
+                                isBookmarks[i] = !isBookmarks[i];
+                              });
+                            } else {
+                              await unbookmark(bookIds[i]);
+                              setState(() {
+                                isBookmarks[i] = !isBookmarks[i];
+                              });
+                            }
+                          },
+                        ),
+                    ],
                   ),
-              ],
-            ),
           ),
         ),
       ),

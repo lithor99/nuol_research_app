@@ -141,7 +141,6 @@ class MyEmailText extends StatelessWidget {
       margin: EdgeInsets.only(left: 10, right: 10),
       child: TextField(
         controller: controller,
-        // inputFormatters: [BlacklistingTextInputFormatter(RegExp(r'\s'))],
         inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r'\s'))],
         style: TextStyle(
           fontFamily: 'NotoSans',
@@ -196,11 +195,11 @@ class MyTextField extends StatelessWidget {
       width: width,
       child: TextField(
         controller: controller,
-        // inputFormatters: [BlacklistingTextInputFormatter(RegExp(r'\s'))],
         inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r'\s'))],
         style: TextStyle(
           fontFamily: 'NotoSans',
           fontSize: 18,
+          color: textColor,
         ),
         keyboardType: TextInputType.number,
         decoration: InputDecoration(

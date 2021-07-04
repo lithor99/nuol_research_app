@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nuol_research/class/myConnectivity.dart';
 import 'package:nuol_research/class/myToast.dart';
 import 'package:nuol_research/jsonDart/register.dart';
@@ -8,6 +9,8 @@ import 'package:nuol_research/class/myButton.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:nuol_research/views/register/confirmSignup.dart';
+
+import '../../main.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -35,7 +38,7 @@ class _SignUpState extends State<SignUp> {
     try {
       await CheckInternet.checkInternet();
       if (CheckInternet.connectivityState == true) {
-        final url = 'http://192.168.43.191:9000/member/register';
+        final url = serverName + '/member/register';
         Map body = {
           'username': username,
           'email': email,
@@ -54,7 +57,6 @@ class _SignUpState extends State<SignUp> {
             });
           } else {
             register = registerFromJson(res.body);
-            Navigator.of(context).pop();
             MaterialPageRoute route = MaterialPageRoute(
               builder: (value) => ConfirmSignup(
                 register.registId,
@@ -64,9 +66,18 @@ class _SignUpState extends State<SignUp> {
               ),
             );
             Navigator.push(context, route);
+            myToast(
+              'ກະລຸນາລໍຖ້າລະບົບກຳລັງສົ່ງລະຫັດໄປຫາອີເມລ',
+              Colors.black,
+              Toast.LENGTH_LONG,
+            );
           }
         } else {
-          myToast('ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ');
+          myToast(
+            'ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
+            Colors.black,
+            Toast.LENGTH_SHORT,
+          );
         }
       }
     } catch (e) {

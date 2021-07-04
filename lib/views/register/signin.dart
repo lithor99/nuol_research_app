@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nuol_research/class/myConnectivity.dart';
 import 'package:nuol_research/class/myTextField.dart';
 import 'package:nuol_research/class/myLogo.dart';
@@ -32,7 +33,7 @@ class _SignInState extends State<SignIn> {
     try {
       await CheckInternet.checkInternet();
       if (CheckInternet.connectivityState == true) {
-        final url = 'http://192.168.43.191:9000/member/login';
+        final url = serverName + '/member/login';
         Map body = {'email': email, 'password': password};
         var res = await http.post(Uri.parse(url), body: body);
 
@@ -48,6 +49,16 @@ class _SignInState extends State<SignIn> {
               passwordController.text = 'ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ';
               passwordTextColor = Colors.red;
             });
+          } else if (data.toString() == '{message: this user has banned}') {
+            setState(() {
+              emailTextColor = Colors.red;
+              passwordTextColor = Colors.red;
+            });
+            myToast(
+              'ບັນຊີນີ້ຖືກຫ້າມບໍ່ໃຫ້ເຂົ້າໃຊ້ລະບົບ',
+              Colors.red,
+              Toast.LENGTH_SHORT,
+            );
           } else {
             await storage.write(key: "jwt", value: data['email']);
             Navigator.of(context).pop();
@@ -58,7 +69,11 @@ class _SignInState extends State<SignIn> {
           }
         }
       } else {
-        myToast('ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ');
+        myToast(
+          'ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
+          Colors.black,
+          Toast.LENGTH_SHORT,
+        );
       }
     } catch (e) {
       print(e.toString());
@@ -159,7 +174,7 @@ class _SignInState extends State<SignIn> {
                   'ລືມລະຫັດຜ່ານ',
                   style: TextStyle(
                     fontFamily: 'NotoSans',
-                    fontSize: 16,
+                    fontSize: 18,
                     color: Colors.red,
                     decoration: TextDecoration.underline,
                   ),

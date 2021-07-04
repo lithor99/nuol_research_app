@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nuol_research/class/myConnectivity.dart';
 import 'package:nuol_research/class/myToast.dart';
 import 'package:nuol_research/main.dart';
@@ -7,6 +8,8 @@ import 'package:nuol_research/class/myButton.dart';
 import 'package:nuol_research/class/myAppBar.dart';
 import 'package:http/http.dart' as http;
 import 'package:nuol_research/class/myAlertDialog.dart';
+import 'package:nuol_research/views/register/forgotPassword.dart';
+import 'package:nuol_research/views/register/signin.dart';
 
 // ignore: must_be_immutable
 class ConfirmPassword extends StatefulWidget {
@@ -24,7 +27,7 @@ class _ConfirmPasswordState extends State<ConfirmPassword> {
   int sendMailCount = 0;
 
   Future<void> sendPassword(String _email, _confNum) async {
-    final url = 'http://192.168.43.191:9000/member/confirm_email';
+    final url = serverName + '/member/confirm_email';
 
     Map body = {'email': _email, 'conf_num': _confNum};
     await http.put(
@@ -37,14 +40,14 @@ class _ConfirmPasswordState extends State<ConfirmPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: MyAppBar(title: 'ລືມລະຫັດຜ່ານ', fontSize: 20).myAppBar(),
+      appBar: MyAppBar(title: 'ກູ້ຄືນລະຫັດຜ່ານ', fontSize: 20).myAppBar(),
       body: Center(
         child: ListView(
           children: [
             Padding(
               padding: const EdgeInsets.all(5),
               child: Container(
-                height: 100,
+                height: 150,
                 color: Colors.cyan[100],
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -98,8 +101,8 @@ class _ConfirmPasswordState extends State<ConfirmPassword> {
                 FocusScope.of(context).unfocus();
                 if (confirmNumberController.text == '') {
                   setState(() {
-                    confirmNumberController.text = 'ກະລຸນາປ້ອນລະຫັດກ່ອນ';
                     confirmNumberTextColor = Colors.red;
+                    confirmNumberController.text = 'ກະລຸນາປ້ອນລະຫັດກ່ອນ';
                   });
                 } else {
                   if (sendMailCount > 2) {
@@ -107,6 +110,7 @@ class _ConfirmPasswordState extends State<ConfirmPassword> {
                       context,
                       'ການແຈ້ງເຕືອນ',
                       'ກະລຸນາກວດເບີ່ງວ່າອີເມລທີ່ທ່ານປ້ອນກ່ອນໜ້ານີ້ຖືກຕ້ອງແລ້ວບໍ?',
+                      Colors.blue,
                     );
                   } else {
                     if (sendMailCount > 2) {
@@ -114,6 +118,7 @@ class _ConfirmPasswordState extends State<ConfirmPassword> {
                         context,
                         'ການແຈ້ງເຕືອນ',
                         'ກະລຸນາກວດເບີ່ງວ່າອີເມລທີ່ທ່ານປ້ອນກ່ອນໜ້ານີ້ຖືກຕ້ອງແລ້ວບໍ?',
+                        Colors.blue,
                       );
                     } else {
                       await CheckInternet.checkInternet();
@@ -123,9 +128,20 @@ class _ConfirmPasswordState extends State<ConfirmPassword> {
                           sendMailButton = 'ຍັງບໍ່ທັນໄດ້ຮັບລະຫັດ';
                         });
                         sendPassword(
-                            widget.email, confirmNumberController.text);
+                          widget.email,
+                          confirmNumberController.text,
+                        );
+                        myToast(
+                          'ກະລຸນາລໍຖ້າລະບົບກຳລັງສົ່ງລະຫັດໄປຫາອີເມລ',
+                          Colors.black,
+                          Toast.LENGTH_LONG,
+                        );
                       } else {
-                        myToast('ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ');
+                        myToast(
+                          'ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
+                          Colors.black,
+                          Toast.LENGTH_SHORT,
+                        );
                       }
                     }
                   }
@@ -142,6 +158,13 @@ class _ConfirmPasswordState extends State<ConfirmPassword> {
               height: 65,
               width: MediaQuery.of(context).size.width - 60,
               onPressed: () {
+                Navigator.of(context).pop(
+                  MaterialPageRoute(builder: (value) => ForgotPassword()),
+                );
+                Navigator.of(context).pop(
+                  MaterialPageRoute(builder: (value) => SignIn()),
+                );
+                Navigator.of(context).pop();
                 MaterialPageRoute route = MaterialPageRoute(
                   builder: (value) => MyApp(),
                 );
