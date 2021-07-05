@@ -98,7 +98,8 @@ class _SignUpState extends State<SignUp> {
               imgUrl: 'images/NUOL.png',
               leftRadius: 80,
               rightRadius: 80,
-              color: Colors.cyan,
+              beginColor: Colors.white,
+              endColor: Colors.green,
             ),
             SizedBox(height: 30),
             MyUsernameText(

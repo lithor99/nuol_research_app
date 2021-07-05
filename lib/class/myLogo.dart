@@ -6,19 +6,24 @@ class MyLogo extends StatelessWidget {
     this.height,
     this.leftRadius,
     this.rightRadius,
-    this.color,
+    this.beginColor,
+    this.endColor,
   });
   final String imgUrl;
   final double height, leftRadius, rightRadius;
-  final Color color;
+  final Color beginColor, endColor;
   @override
   Widget build(BuildContext context) {
     return Container(
       height: height,
       decoration: BoxDecoration(
-        color: color,
         image: DecorationImage(
           image: AssetImage(imgUrl),
+        ),
+        gradient: LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+          colors: [beginColor, endColor],
         ),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(leftRadius),

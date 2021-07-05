@@ -114,7 +114,7 @@ class _MyBookCardState extends State<MyBookCard> {
                     children: [
                       SizedBox(width: 5),
                       Text(
-                        'ຂຽນໂດຍ:',
+                        'ຄົ້ນຄວ້າໂດຍ:',
                         style: TextStyle(
                           fontFamily: 'NotoSans',
                           fontSize: 14,
@@ -213,7 +213,6 @@ class _MyBookCardState extends State<MyBookCard> {
                     children: [
                       IconButton(
                         icon: Icon(
-                          // Icons.star_outline,
                           widget.bookmarkIcon,
                           color: Colors.lightBlue,
                           size: 35,

@@ -93,7 +93,8 @@ class _SignInState extends State<SignIn> {
               imgUrl: 'images/NUOL.png',
               leftRadius: 80,
               rightRadius: 80,
-              color: Colors.cyan[500],
+              beginColor: Colors.white,
+              endColor: Colors.blue,
             ),
             SizedBox(height: 30),
             MyEmailText(
