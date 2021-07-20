@@ -14,17 +14,12 @@ class _WelcomeState extends State<Welcome> {
     SignIn(),
     SignUp(),
   ];
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // SignIn();
-  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(5),
+        padding: EdgeInsets.all(0),
         child: selectPage[index],
       ),
       bottomNavigationBar: ConvexAppBar(
@@ -39,7 +34,7 @@ class _WelcomeState extends State<Welcome> {
           });
         },
         color: Colors.blue[800],
-        backgroundColor: Colors.cyan[200],
+        backgroundColor: Colors.cyan[100],
         activeColor: Colors.blue[800],
         height: 50,
       ),

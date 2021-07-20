@@ -74,7 +74,7 @@ class _SignUpState extends State<SignUp> {
           }
         } else {
           myToast(
-            'ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
+            'ກວດສອບການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
             Colors.black,
             Toast.LENGTH_SHORT,
           );

@@ -246,7 +246,7 @@ class _EditPasswordState extends State<EditPassword> {
                                 }
                               } else {
                                 myToast(
-                                  'ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
+                                  'ກວດສອບການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
                                   Colors.black,
                                   Toast.LENGTH_SHORT,
                                 );

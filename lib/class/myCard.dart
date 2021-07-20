@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class MyHomeCard extends StatelessWidget {
-  MyHomeCard({
+class MyMenuCard extends StatelessWidget {
+  MyMenuCard({
     this.title,
     this.icon,
     this.iconColor,

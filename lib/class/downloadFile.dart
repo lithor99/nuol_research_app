@@ -59,7 +59,7 @@ class DownloadBookFile {
     } catch (e) {}
   }
 
-  static downloadCallback(id, status, progress) {
+  static downloadCallback(String id, DownloadTaskStatus status, int progress) {
     if (status == DownloadTaskStatus.complete) {
       print('...........download complete...........');
       SendPort sendPort =

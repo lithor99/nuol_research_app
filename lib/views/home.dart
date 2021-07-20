@@ -368,31 +368,31 @@ class _HomeState extends State<Home> {
               onTap: () async {
                 Navigator.of(context).pop();
                 MyAlertDialog(
-                  title: 'ທ່ານກຳລັງຈະອອກຈາກລະບົບ!',
-                  content:
-                      'ໃນການອອກຈາກລະບົບນີ້ຫາກທ່ານຕ້ອງການເຂົ້າໃຊ້ງານອີກທ່ານຕ້ອງໄດ້ປ້ອນອີເມລ ແລະ ລະຫັດຜ່ານເພື່ອເຂົ້າສູ່ລະບົບ',
-                  cancelColor: Colors.blue,
-                  okColor: Colors.red,
-                  onCancel: () async {
-                    Navigator.of(context).pop();
-                  },
-                  onOkay: () async {
-                    signOut();
-                  },
-                ).showDialogBox(context);
+                    title: 'ທ່ານກຳລັງຈະອອກຈາກລະບົບ!',
+                    content:
+                        'ໃນການອອກຈາກລະບົບນີ້ຫາກທ່ານຕ້ອງການເຂົ້າໃຊ້ງານລະບົບອີກທ່ານຕ້ອງໄດ້ປ້ອນອີເມລ ແລະ ລະຫັດຜ່ານເພື່ອເຂົ້າສູ່ລະບົບໃໝ່',
+                    okColor: Colors.red,
+                    cancelColor: Colors.blue,
+                    onOkay: () async {
+                      signOut();
+                    },
+                    onCancel: () async {
+                      Navigator.of(context).pop();
+                    }).showDialogBox(context);
               },
             ),
           ],
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [Colors.blue, Colors.green, Colors.orange[300]],
-          ),
-        ),
+        // decoration: BoxDecoration(
+        //   gradient: LinearGradient(
+        //     begin: Alignment.centerLeft,
+        //     end: Alignment.centerRight,
+        //     colors: [Colors.blue[200], Colors.blue, Colors.blue[200]],
+        //   ),
+        // ),
+        color: Colors.blue[400],
         child: Padding(
           padding: EdgeInsets.all(5),
           child: FutureBuilder(
@@ -402,7 +402,7 @@ class _HomeState extends State<Home> {
                     ? GridView.count(
                         crossAxisCount: 2,
                         children: [
-                          MyHomeCard(
+                          MyMenuCard(
                             title: 'ອ່ານບົດຄົ້ນຄວ້າທັງໝົດ',
                             icon: Icons.apps,
                             iconColor: Colors.blue[800],
@@ -411,13 +411,16 @@ class _HomeState extends State<Home> {
                               if (CheckInternet.connectivityState == true) {
                                 if (Home.data == null) {
                                   MyAlertDialog(
-                                    title: 'ລະບົບບໍ່ຕອບສະໜອງ!',
-                                    content: 'ກະລຸນາເຂົ້າສູ່ລະບົບໃໝ່',
-                                    okColor: Colors.blue,
-                                    onOkay: () async {
-                                      exit(0);
-                                    },
-                                  ).showDialogBox(context);
+                                      title: 'ລະບົບບໍ່ຕອບສະໜອງ!',
+                                      content: 'ກະລຸນາເຂົ້າສູ່ລະບົບໃໝ່',
+                                      okColor: Colors.blue,
+                                      cancelColor: Colors.red,
+                                      onOkay: () async {
+                                        exit(0);
+                                      },
+                                      onCancel: () async {
+                                        Navigator.of(context).pop();
+                                      }).showDialogBox(context);
                                 } else if (Home.data.toString() ==
                                     '{message: this user has banned}') {
                                   myToast('ບັນຊີນີ້ຖືກຫ້າມບໍ່ໃຫ້ເຂົ້າໃຊ້ລະບົບ',
@@ -432,14 +435,14 @@ class _HomeState extends State<Home> {
                                 }
                               } else {
                                 myToast(
-                                  'ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
+                                  'ກວດສອບການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
                                   Colors.black,
                                   Toast.LENGTH_SHORT,
                                 );
                               }
                             },
                           ),
-                          MyHomeCard(
+                          MyMenuCard(
                             title: 'ອ່ານບົດຕາມຍອດ view',
                             icon: Icons.remove_red_eye_outlined,
                             iconColor: Colors.blue[800],
@@ -448,13 +451,16 @@ class _HomeState extends State<Home> {
                               if (CheckInternet.connectivityState == true) {
                                 if (Home.data == null) {
                                   MyAlertDialog(
-                                    title: 'ລະບົບບໍ່ຕອບສະໜອງ!',
-                                    content: 'ກະລຸນາເຂົ້າສູ່ລະບົບໃໝ່',
-                                    okColor: Colors.blue,
-                                    onOkay: () async {
-                                      exit(0);
-                                    },
-                                  ).showDialogBox(context);
+                                      title: 'ລະບົບບໍ່ຕອບສະໜອງ!',
+                                      content: 'ກະລຸນາເຂົ້າສູ່ລະບົບໃໝ່',
+                                      okColor: Colors.blue,
+                                      cancelColor: Colors.red,
+                                      onOkay: () async {
+                                        exit(0);
+                                      },
+                                      onCancel: () async {
+                                        Navigator.of(context).pop();
+                                      }).showDialogBox(context);
                                 } else if (Home.data.toString() ==
                                     '{message: this user has banned}') {
                                   myToast(
@@ -472,14 +478,14 @@ class _HomeState extends State<Home> {
                                 }
                               } else {
                                 myToast(
-                                  'ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
+                                  'ກວດສອບການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
                                   Colors.black,
                                   Toast.LENGTH_SHORT,
                                 );
                               }
                             },
                           ),
-                          MyHomeCard(
+                          MyMenuCard(
                             title: 'ອ່ານບົດຕາມຍອດ like',
                             icon: Icons.thumb_up_alt_outlined,
                             iconColor: Colors.blue[800],
@@ -488,13 +494,16 @@ class _HomeState extends State<Home> {
                               if (CheckInternet.connectivityState == true) {
                                 if (Home.data == null) {
                                   MyAlertDialog(
-                                    title: 'ລະບົບບໍ່ຕອບສະໜອງ!',
-                                    content: 'ກະລຸນາເຂົ້າສູ່ລະບົບໃໝ່',
-                                    okColor: Colors.blue,
-                                    onOkay: () async {
-                                      exit(0);
-                                    },
-                                  ).showDialogBox(context);
+                                      title: 'ລະບົບບໍ່ຕອບສະໜອງ!',
+                                      content: 'ກະລຸນາເຂົ້າສູ່ລະບົບໃໝ່',
+                                      okColor: Colors.blue,
+                                      cancelColor: Colors.red,
+                                      onOkay: () async {
+                                        exit(0);
+                                      },
+                                      onCancel: () async {
+                                        Navigator.of(context).pop();
+                                      }).showDialogBox(context);
                                 } else if (Home.data.toString() ==
                                     '{message: this user has banned}') {
                                   myToast(
@@ -512,14 +521,14 @@ class _HomeState extends State<Home> {
                                 }
                               } else {
                                 myToast(
-                                  'ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
+                                  'ກວດສອບການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
                                   Colors.black,
                                   Toast.LENGTH_SHORT,
                                 );
                               }
                             },
                           ),
-                          MyHomeCard(
+                          MyMenuCard(
                             title: 'ອ່ານບົດຕາມຍອດ download',
                             icon: Icons.arrow_circle_down,
                             iconColor: Colors.blue[800],
@@ -528,13 +537,16 @@ class _HomeState extends State<Home> {
                               if (CheckInternet.connectivityState == true) {
                                 if (Home.data == null) {
                                   MyAlertDialog(
-                                    title: 'ລະບົບບໍ່ຕອບສະໜອງ!',
-                                    content: 'ກະລຸນາເຂົ້າສູ່ລະບົບໃໝ່',
-                                    okColor: Colors.blue,
-                                    onOkay: () async {
-                                      exit(0);
-                                    },
-                                  ).showDialogBox(context);
+                                      title: 'ລະບົບບໍ່ຕອບສະໜອງ!',
+                                      content: 'ກະລຸນາເຂົ້າສູ່ລະບົບໃໝ່',
+                                      okColor: Colors.blue,
+                                      cancelColor: Colors.red,
+                                      onOkay: () async {
+                                        exit(0);
+                                      },
+                                      onCancel: () async {
+                                        Navigator.of(context).pop();
+                                      }).showDialogBox(context);
                                 } else if (Home.data.toString() ==
                                     '{message: this user has banned}') {
                                   myToast(
@@ -552,14 +564,14 @@ class _HomeState extends State<Home> {
                                 }
                               } else {
                                 myToast(
-                                  'ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
+                                  'ກວດສອບການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
                                   Colors.black,
                                   Toast.LENGTH_SHORT,
                                 );
                               }
                             },
                           ),
-                          MyHomeCard(
+                          MyMenuCard(
                             title: 'ອ່ານບົດທີ່ບັນທຶກໄວ້',
                             icon: Icons.star_outline,
                             iconColor: Colors.blue[800],
@@ -568,13 +580,16 @@ class _HomeState extends State<Home> {
                               if (CheckInternet.connectivityState == true) {
                                 if (Home.data == null) {
                                   MyAlertDialog(
-                                    title: 'ລະບົບບໍ່ຕອບສະໜອງ!',
-                                    content: 'ກະລຸນາເຂົ້າສູ່ລະບົບໃໝ່',
-                                    okColor: Colors.blue,
-                                    onOkay: () async {
-                                      exit(0);
-                                    },
-                                  ).showDialogBox(context);
+                                      title: 'ລະບົບບໍ່ຕອບສະໜອງ!',
+                                      content: 'ກະລຸນາເຂົ້າສູ່ລະບົບໃໝ່',
+                                      okColor: Colors.blue,
+                                      cancelColor: Colors.red,
+                                      onOkay: () async {
+                                        exit(0);
+                                      },
+                                      onCancel: () async {
+                                        Navigator.of(context).pop();
+                                      }).showDialogBox(context);
                                 } else if (Home.data.toString() ==
                                     '{message: this user has banned}') {
                                   myToast(
@@ -592,14 +607,14 @@ class _HomeState extends State<Home> {
                                 }
                               } else {
                                 myToast(
-                                  'ກະລຸນາກວດເບີ່ງການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
+                                  'ກວດສອບການເຊື່ອມຕໍ່ອິນເຕີເນັດກ່ອນ',
                                   Colors.black,
                                   Toast.LENGTH_SHORT,
                                 );
                               }
                             },
                           ),
-                          MyHomeCard(
+                          MyMenuCard(
                             title: 'ຕັ້ງຄ່າ',
                             icon: Icons.settings,
                             iconColor: Colors.blue[800],
