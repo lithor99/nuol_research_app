@@ -241,7 +241,7 @@ class MyLabelText extends StatelessWidget {
         textAlign: TextAlign.end,
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           filled: true,
           fillColor: Colors.white,
           hintText: title,

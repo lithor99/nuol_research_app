@@ -75,10 +75,9 @@ class _SettingState extends State<Setting> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   MyLabelText(
-                    title: 'ຮັບບົດຕາມຍອດການເຂົ້າອ່ານ:',
+                    title: 'ຈຳນວນບົດຕາມຍອດ view:',
                     width: 4 * (MediaQuery.of(context).size.width) / 6,
                   ),
-                  SizedBox(width: 2),
                   MyTextField(
                     controller: txtView,
                     width: (MediaQuery.of(context).size.width) / 6,
@@ -90,10 +89,9 @@ class _SettingState extends State<Setting> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   MyLabelText(
-                    title: 'ຮັບບົດຕາມຍອດການກົດໄລຄ໌:',
+                    title: 'ຈຳນວນບົດຕາມຍອດ like:',
                     width: 4 * (MediaQuery.of(context).size.width) / 6,
                   ),
-                  SizedBox(width: 2),
                   MyTextField(
                     controller: txtLike,
                     width: (MediaQuery.of(context).size.width) / 6,
@@ -105,14 +103,13 @@ class _SettingState extends State<Setting> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   MyLabelText(
-                    title: 'ຮັບບົດຕາມຍອດດາວໂຫຼດ:',
+                    title: 'ຈຳນວນບົດຕາມຍອດ download:',
                     width: 4 * (MediaQuery.of(context).size.width) / 6,
                   ),
-                  SizedBox(width: 2),
                   MyTextField(
                     controller: txtDownload,
                     width: (MediaQuery.of(context).size.width) / 6,
-                  )
+                  ),
                 ],
               ),
               SizedBox(height: 30),
