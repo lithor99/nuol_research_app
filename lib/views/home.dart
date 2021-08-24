@@ -42,7 +42,7 @@ class Home extends StatefulWidget {
   static var data;
   static Future<void> getMemberData(String email) async {
     try {
-      final url = 'http://192.168.43.191:9000/member/get_member_data';
+      final url = serverName + '/member/get_member_data';
       // var headers = {
       //   'Authorization': 'nuol_research',
       // };

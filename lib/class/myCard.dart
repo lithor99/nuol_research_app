@@ -90,7 +90,7 @@ class _MyBookCardState extends State<MyBookCard> {
                     widget.bookName,
                     style: TextStyle(
                       fontFamily: 'NotoSans',
-                      fontSize: 22,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,

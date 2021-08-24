@@ -9,8 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 final FlutterSecureStorage storage = FlutterSecureStorage();
 SharedPreferences preferences;
 var email;
+// final String serverName = 'http://192.168.43.191:9000';
 final String serverName = 'http://192.168.43.191:9000';
-// final String serverName = 'http://192.168.43.60:9000';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
